@@ -18,7 +18,8 @@ library
   exposed-modules:     Rest
   build-depends:       base >= 4.7 && < 5,
                        wai,
-                       http-types
+                       http-types,
+                       scotty
   default-language:    Haskell2010
 
 executable bitter-xylophone-exe

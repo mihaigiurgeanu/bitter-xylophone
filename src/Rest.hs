@@ -2,7 +2,13 @@
 module Rest where
 
 import Network.Wai
-import Network.HTTP.Types
+import Web.Scotty
 
-app :: Application
-app _ response = response $ responseLBS status200 [("Content-Type", "text/html")] "<h1>Hello World!</h1>"
+app :: IO Application
+app = scottyApp bitterXylophoneApp
+
+bitterXylophoneApp :: ScottyM ()
+bitterXylophoneApp = do
+  get "/" $ do
+    html $ "<h1>Hello, World!</h1><p>...from Scotty</p>"
+
