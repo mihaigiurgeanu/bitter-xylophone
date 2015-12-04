@@ -30,7 +30,7 @@ executable bitter-xylophone-exe
     ghc-options: -Wall
   build-depends:       base
                      , bitter-xylophone
-                     , wai-handler-webkit
+                     , wai-handler-launch
   default-language:    Haskell2010
 
 test-suite bitter-xylophone-test

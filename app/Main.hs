@@ -1,8 +1,8 @@
 module Main where
 
 import Rest
-import Network.Wai.Handler.Webkit (run)
+import Network.Wai.Handler.Launch (run)
 
 main :: IO ()
-main = run "bitter-xylophone" app
+main = run app
 
