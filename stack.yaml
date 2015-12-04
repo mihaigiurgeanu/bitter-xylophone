@@ -1,4 +1,5 @@
-extra-deps: []
+extra-deps:
+- wai-handler-webkit-3.0.0.2 # not in lts-3.2
 resolver: lts-3.2
 flags: {}
 packages:
