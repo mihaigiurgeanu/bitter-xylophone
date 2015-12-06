@@ -3,12 +3,17 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.170"]
                  [secretary "1.2.3"]
-                 [shodan "0.4.2"]]
+                 [shodan "0.4.2"]
+                 [domina "1.0.3"]]
   :cljsbuild {:builds [{
                         ; The path to the top-level ClojureScript source directory:
                         :source-paths ["cljs"]
                         ; The standard ClojureScript compiler options:
                         ; (See the ClojureScript compiler documentation for details.)
-                        :compiler {:output-to "resources/js/main.js"  ; default: target/cljsbuild-main.js
-                                   :optimizations :whitespace
-                                   :pretty-print true}}]})
+                        :compiler {:output-to "resources/js/main.js"
+                                   :output-dir "resources/js/compiled/out"
+                                   :asset-path "/js/compiled/out"
+                                   :main "bitter-xylophone.core"
+                                   :optimizations :none
+                                   :pretty-print true
+                                   :source-map true}}]})
