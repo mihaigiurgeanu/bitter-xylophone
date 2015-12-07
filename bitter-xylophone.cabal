@@ -20,7 +20,9 @@ library
                        wai,
                        scotty,
                        wai-middleware-static,
-                       text
+                       text,
+                       process,
+                       transformers
   default-language:    Haskell2010
 
 executable bitter-xylophone-exe

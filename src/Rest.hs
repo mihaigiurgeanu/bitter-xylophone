@@ -4,8 +4,10 @@ module Rest where
 import Network.Wai
 import Network.Wai.Middleware.Static
 import Web.Scotty
-import Data.Monoid (mconcat)
-import Data.Text.Lazy (Text)
+import Data.Monoid(mconcat)
+import Data.Text.Lazy(Text, unpack)
+import System.Process(createProcess, shell)
+import Control.Monad.IO.Class(liftIO)
 
 app :: IO Application
 app = scottyApp bitterXylophoneApp
@@ -23,6 +25,14 @@ bitterXylophoneApp = do
 processFileCommand :: Text -> Text -> ActionM ()
 processFileCommand filename command = processFileCommand' command
   where
-    processFileCommand' "execute" = text $ mconcat ["<p>Executing file: <strong>", filename, "</strong></p>"]
+    processFileCommand' "execute" = do
+      liftIO $ runCommand filename
+      text $ mconcat ["<p>Executing file: <strong>", filename, "</strong></p>"]
     processFileCommand' _ = next
 
+runCommand :: Text -> IO ()
+runCommand cmd = do
+  r <- createProcess (shell $ unpack cmd)
+  return ()
+
+                      
