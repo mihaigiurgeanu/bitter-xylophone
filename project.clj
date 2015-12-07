@@ -4,7 +4,9 @@
                  [org.clojure/clojurescript "1.7.170"]
                  [secretary "1.2.3"]
                  [shodan "0.4.2"]
-                 [domina "1.0.3"]]
+                 [domina "1.0.3"]
+                 [cljs-ajax "0.5.2"]
+                 [siren "0.2.0"]]
   :cljsbuild {:builds [{
                         ; The path to the top-level ClojureScript source directory:
                         :source-paths ["cljs"]
