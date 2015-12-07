@@ -15,7 +15,7 @@
 
 (console/debug "setting up routes")
 
-(defroute "/" [] show-all)
+(defroute "/" [] (show-all))
 (defroute "/categories/:catid" [catid]
   (show-category catid))
 (defroute "/devices/:devid" [devid]
@@ -25,10 +25,11 @@
 
 ;; Quick and dirty history configuration.
 (let [h (if (.isSupported Html5History) (Html5History.) (History.))]
-  (events/listen h EventType/NAVIGATE #(let [path (.-token %)]
-                                         (console/debug (str "routing path: " path))
-                                         (secretary/dispatch! path)
-                                         (set-active-nav! path)))
+  (events/listen h EventType/NAVIGATE #(let [path (.-token %)
+                                             path- (if (empty? path) "/" path)]
+                                         (console/debug (str "routing path: " path-))
+                                         (secretary/dispatch! path-)
+                                         (set-active-nav! path-)))
   (doto h (.setEnabled true)))
 
 (set-up-actions)
