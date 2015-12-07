@@ -1,33 +1,37 @@
 (ns bitter-xylophone.filtering
-  (:require [domina :refer [add-class! remove-class! toggle-class! by-class clone text destroy-children! append! prepend! set-text! attr]]
+  (:require [domina :refer [add-class! remove-class! toggle-class! by-class clone text destroy-children! append! prepend! set-text! attr has-class? nodes]]
             [domina.xpath :refer [xpath]]
             [domina.css :refer [sel]]
             [shodan.console :as console :include-macros true]))
 
+(def ^private data-rows (sel "div.data"))
+(defn- filter-data-nodes [content]
+  (doall (filter #(has-class? % "data") (nodes content))))
+
 (defn- sel-dev
   "Selects the nodes corresponding to a device"
   [devid]
-  (xpath (str "//div[@data-device='" devid "']")))
+  (filter-data-nodes (xpath (str "//div[@data-device='" devid "']"))))
 
 (defn- sel-not-dev
   "Selects the nodes that are not for a device"
   [devid]
-  (xpath (str "//div[@data-device!='" devid "' or (@data-category and not(@data-device))]")))
+  (filter-data-nodes (xpath (str "//div[@data-device!='" devid "' or (@data-category and not(@data-device))]"))))
 
 (defn- sel-cat
   "Selects the nodes corresponding to a category"
   [catid]
-  (xpath (str "//div[@data-category='" catid "']")))
+  (filter-data-nodes (xpath (str "//div[@data-category='" catid "']"))))
 
 (defn- sel-not-cat
   "Selects the nodes that don't have a category"
   [catid]
-  (xpath (str "//div[@data-category!='" catid "' or (@data-device and not(@data-category))]")))
+  (filter-data-nodes (xpath (str "//div[@data-category!='" catid "' or (@data-device and not(@data-category))]"))))
 
 (defn- sel-all
   "Select all the nodes that list drivers"
   []
-  (xpath "//div[@data-category or @data-device]"))
+  data-rows)
 
 (defn set-active-nav!
   "Marks the active selection in side navbar"
@@ -74,3 +78,10 @@
   (console/debug (str "show-device called: " devid))
   (add-class! (sel-not-dev devid) "hidden")
   (remove-class! (sel-dev devid) "hidden"))
+
+(defn count-cat
+  "Count entries in a category"
+  [catid]
+  (let [cat-nodes (sel-cat catid)
+        file-nodes (xpath cat-nodes "a[@data-file]")]
+    (count (nodes file-nodes))))
