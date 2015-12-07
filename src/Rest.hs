@@ -23,6 +23,6 @@ bitterXylophoneApp = do
 processFileCommand :: Text -> Text -> ActionM ()
 processFileCommand filename command = processFileCommand' command
   where
-    processFileCommand' "execute" = html $ mconcat ["<p>Executing file: ", filename, "</p>"]
+    processFileCommand' "execute" = text $ mconcat ["<p>Executing file: <strong>", filename, "</strong></p>"]
     processFileCommand' _ = next
 

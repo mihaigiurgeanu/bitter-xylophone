@@ -6,6 +6,7 @@
                  [shodan "0.4.2"]
                  [domina "1.0.3"]
                  [cljs-ajax "0.5.2"]
+                 [com.cemerick/url "0.1.1"]
                  [siren "0.2.0"]]
   :cljsbuild {:builds [{
                         ; The path to the top-level ClojureScript source directory:
