@@ -12,7 +12,7 @@
 (defn- sel-not-dev
   "Selects the nodes that are not for a device"
   [devid]
-  (xpath (str "//div[@data-device!='" devid "']")))
+  (xpath (str "//div[@data-device!='" devid "' or (@data-category and not(@data-device))]")))
 
 (defn- sel-cat
   "Selects the nodes corresponding to a category"
@@ -22,7 +22,7 @@
 (defn- sel-not-cat
   "Selects the nodes that don't have a category"
   [catid]
-  (xpath (str "//div[@data-category!='" catid "']")))
+  (xpath (str "//div[@data-category!='" catid "' or (@data-device and not(@data-category))]")))
 
 (defn- sel-all
   "Select all the nodes that list drivers"
