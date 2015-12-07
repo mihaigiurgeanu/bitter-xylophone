@@ -1,6 +1,7 @@
 (ns bitter-xylophone.filtering
-  (:require [domina :refer [add-class! remove-class! toggle-class! by-class]]
+  (:require [domina :refer [add-class! remove-class! toggle-class! by-class clone text destroy-children! append! prepend! set-text! attr]]
             [domina.xpath :refer [xpath]]
+            [domina.css :refer [sel]]
             [shodan.console :as console :include-macros true]))
 
 (defn- sel-dev
@@ -36,11 +37,23 @@
         active-query (str "li[a/@href='" link- "']")
         all-query "li"
         active (xpath root active-query)
-        all (xpath root all-query)]
+        all (xpath root all-query)
+        page-header (sel "h1.page-header")
+        active-icon (clone (sel active ".icon"))
+        active-text (text active)
+        active-title (text (attr (sel active "a") "title"))]
     (console/debug (str "removing active class from (" all-query ")"))
     (remove-class! all "active")
     (console/debug (str "adding active class to (" active-query ")"))
-    (add-class! active "active")))
+    (add-class! active "active")
+    (console/debug "Removing page header content")
+    (destroy-children! page-header)
+    (console/debug (str "Setting page title to '" active-text "'"))
+    (set-text! page-header (str " " active-text " "))
+    (console/debug "Adding current icon to the page header")
+    (prepend! page-header active-icon)
+    (console/debug (str "Setting page header sub-title to '" active-title "'"))
+    (append! page-header (str "<small> " active-title "</small>"))))
 
 (defn show-all
   "displays all devices and categories"
