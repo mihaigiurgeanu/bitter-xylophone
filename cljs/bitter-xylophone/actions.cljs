@@ -29,9 +29,10 @@
                     :headers {"Content-type" "application/x-www-form-urlencoded"}
                     :body (map->query {:command "execute"})})))
 
-(defn set-up-actions
+(defn set-up-actions!
   "Setting up links to files to post execute command to the server"
   []
+  (console/debug "Setting up action on links")
   (let [action-links (xpath "//a[@data-file]")]
     (listen! action-links :click (fn [e]
                                    (prevent-default e)

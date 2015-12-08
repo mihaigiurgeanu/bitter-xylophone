@@ -79,9 +79,24 @@
   (add-class! (sel-not-dev devid) "hidden")
   (remove-class! (sel-dev devid) "hidden"))
 
-(defn count-cat
+(defn- count-cat
   "Count entries in a category"
   [catid]
   (let [cat-nodes (sel-cat catid)
-        file-nodes (xpath cat-nodes "a[@data-file]")]
+        file-nodes (xpath cat-nodes "*//a[@data-file]")]
     (count (nodes file-nodes))))
+
+(defn- category-of [node] (attr node "data-category"))
+(defn- count-of [node] (let [catid (category-of node)
+                             the-count (count-cat catid)]
+                         (console/debug (str "Count for " catid " is " the-count))
+                         the-count))
+(defn- display-count! [node] (set-text! node (count-of node)))
+
+(defn update-count-summaries!
+  "Updates the fields showing drivers count per category"
+  []
+  (let [summary-nodes (sel ".count-cat")]
+    (console/debug (str "Updating count summaries for " (count (nodes summary-nodes)) " nodes"))
+    (doseq [node (nodes summary-nodes)]
+      (display-count! node))))

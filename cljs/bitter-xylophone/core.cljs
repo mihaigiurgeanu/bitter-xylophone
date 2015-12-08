@@ -2,8 +2,8 @@
   (:require [secretary.core :as secretary :refer-macros [defroute]]
             [goog.events :as events]
             [goog.history.EventType :as EventType]
-            [bitter-xylophone.filtering :refer [show-all show-device show-category set-active-nav!]]
-            [bitter-xylophone.actions :refer [set-up-actions]]
+            [bitter-xylophone.filtering :refer [show-all show-device show-category set-active-nav! update-count-summaries!]]
+            [bitter-xylophone.actions :refer [set-up-actions!]]
             [shodan.console :as console :include-macros true])
   (:import goog.History
            goog.history.Html5History))
@@ -32,4 +32,5 @@
                                          (set-active-nav! path-)))
   (doto h (.setEnabled true)))
 
-(set-up-actions)
+(set-up-actions!)
+(update-count-summaries!)
