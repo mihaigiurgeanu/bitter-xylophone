@@ -7,17 +7,21 @@
             [domina :refer [attr]]
             [shodan.console :as console :include-macros true]
             [ajax.core :refer [POST]]
-            [cemerick.url :refer (map->query url-encode)]))
+            [cemerick.url :refer (map->query url-encode)]
+            [siren.core :refer (siren!)]))
 
 (defn- exec-success
   "Handler for success return of POST execute command"
   [response]
-  (console/log (str "POST execute request received response from server: " response)))
+  (console/log (str "POST execute request received response from server: " response))
+  (siren! {:content (str "<i class='fa fa-spinner'></i> " response), :delay 7000}))
 
 (defn- exec-failed
   "Handler for failure of POST execute command"
   [{:keys [status status-text failure]}]
-  (console/error (str "POST execute request failed (" status " - " status-text "): " failure)))
+  (console/error (str "POST execute request failed (" status " - " status-text "): " failure))
+  (siren! {:content (str "<i class='fa fa-exclamation-circle'></i> " failure ": " status " - " status-text),
+           :delay 7000}))
 
 (defn- post-execute
   "Sending execute file command to the server"

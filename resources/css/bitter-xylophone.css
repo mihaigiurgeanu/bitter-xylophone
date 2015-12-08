@@ -1,0 +1,3 @@
+#siren-container {
+  z-index: 1031; // over bootstrap's nav which is 1030
+}
