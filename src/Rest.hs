@@ -4,35 +4,35 @@ module Rest where
 import Network.Wai
 import Network.Wai.Middleware.Static
 import Web.Scotty
-import Data.Monoid(mconcat)
-import Data.Text.Lazy(Text, unpack)
-import System.Process(createProcess, shell)
-import Control.Monad.IO.Class(liftIO)
+import Data.Monoid (mconcat)
+import Data.Text.Lazy (Text)
+import Control.Monad.IO.Class (liftIO)
+import qualified Data.Map.Strict as Map (singleton)
+
+import Process (runCommand, getNextUpdate, terminateCommand, startAppState, AppState)
 
 app :: IO Application
-app = scottyApp bitterXylophoneApp
+app = do
+  appState <- startAppState
+  scottyApp $ bitterXylophoneApp appState
 
-bitterXylophoneApp :: ScottyM ()
-bitterXylophoneApp = do
+bitterXylophoneApp :: AppState -> ScottyM ()
+bitterXylophoneApp state = do
   middleware $ staticPolicy (noDots >-> addBase "resources")
   get "/" $ do
     redirect "/index.html"
-  post (regex "/files/(.*)") $ do
-    filename <- param "1"
+  post (regex "/processes") $ do
     command <- (param "command") :: ActionM Text
-    processFileCommand filename command
+    uuid <- liftIO $ runCommand state command
+    json $ Map.singleton ("uuid" :: Text) uuid
+  get "/processes" $ do
+    known <- param "known"
+    uuids <- liftIO $ getNextUpdate state known
+    json $ uuids
+  post "/processes/:uuid" $ do
+    uuid <- param "uuid"
+    liftIO $ terminateCommand state uuid
+    
 
-processFileCommand :: Text -> Text -> ActionM ()
-processFileCommand filename command = processFileCommand' command
-  where
-    processFileCommand' "execute" = do
-      liftIO $ runCommand filename
-      text $ mconcat ["<p>Executing file: <strong>", filename, "</strong></p>"]
-    processFileCommand' _ = next
 
-runCommand :: Text -> IO ()
-runCommand cmd = do
-  r <- createProcess (shell $ unpack cmd)
-  return ()
 
-                      
