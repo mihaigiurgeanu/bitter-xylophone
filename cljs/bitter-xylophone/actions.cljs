@@ -12,9 +12,9 @@
 
 (defn- exec-success
   "Handler for success return of POST execute command"
-  [response]
-  (console/log (str "POST execute request received response from server: " response))
-  (siren! {:content (str "<i class='fa fa-spinner'></i> " response), :delay 7000}))
+  [data]
+  (console/log (str "POST execute request received response from server: " data))
+  (siren! {:content (str "<i class='fa fa-spinner'></i> Launched process identified internally with " (data "uuid")), :delay 7000}))
 
 (defn- exec-failed
   "Handler for failure of POST execute command"
@@ -26,12 +26,12 @@
 (defn- post-execute
   "Sending execute file command to the server"
   [file-name]
-  (let [post-url (str "/files/" (url-encode file-name))]
+  (let [post-url "/processes"]
     (console/debug (str "Posting execute command to '" post-url "'"))
     (POST post-url {:handler exec-success
                     :error-handler exec-failed
                     :headers {"Content-type" "application/x-www-form-urlencoded"}
-                    :body (map->query {:command "execute"})})))
+                    :body (map->query {:command (url-encode file-name)})})))
 
 (defn set-up-actions!
   "Setting up links to files to post execute command to the server"
