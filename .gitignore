@@ -4,4 +4,6 @@
 /resources/js/main.js
 /resources/js/compiled/
 /target
+/.vagrant
+/windows-kits
 
