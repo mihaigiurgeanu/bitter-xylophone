@@ -45,13 +45,13 @@ runCommand psVar cmd = do (_, _, _, ph) <- createProcess (shell $ unpack cmd)
 -- the list of process UUIDs that are still running.
 getNextUpdate :: AppState
               -> Int -- ^ The current state
-              -> IO [T.Text]
+              -> IO (Int, [T.Text])
 getNextUpdate processesVar known = atomically (readTVar processesVar >>= getNextUpdate_)
   where
     getNextUpdate_ (Processes crt ps) = do
       if known >= crt
         then retry
-        else return $ map toText $ Map.keys ps
+        else return (crt, map toText $ Map.keys ps)
 
 -- | Terminates a process identified by a given UUID
 terminateCommand :: AppState -> Text -> IO ()
