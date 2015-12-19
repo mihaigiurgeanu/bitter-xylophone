@@ -7,7 +7,7 @@
             [domina :refer [attr]]
             [shodan.console :as console :include-macros true]
             [ajax.core :refer [POST]]
-            [cemerick.url :refer (map->query url-encode)]
+            [cemerick.url :refer (map->query)]
             [siren.core :refer (siren!)]))
 
 (defn- exec-success
@@ -31,7 +31,7 @@
     (POST post-url {:handler exec-success
                     :error-handler exec-failed
                     :headers {"Content-type" "application/x-www-form-urlencoded"}
-                    :body (map->query {:command (url-encode file-name)})})))
+                    :body (map->query {:command file-name})})))
 
 (defn set-up-actions!
   "Setting up links to files to post execute command to the server"
