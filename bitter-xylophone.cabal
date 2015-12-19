@@ -16,8 +16,8 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Rest,
-                       Process
+  exposed-modules:     Rest
+  other-modules:       Process
   build-depends:       base >= 4.7 && < 5,
                        wai,
                        scotty,
@@ -32,7 +32,7 @@ library
   ghc-options:         -threaded
 
 
-executable bitter-xylophone-exe
+executable bitter-xylophone-app
   hs-source-dirs:      app
   main-is:             Main.hs
   if os(windows)
@@ -44,15 +44,6 @@ executable bitter-xylophone-exe
                      , wai-handler-launch
   default-language:    Haskell2010
 
-
-test-suite bitter-xylophone-test
-  type:                exitcode-stdio-1.0
-  hs-source-dirs:      test
-  main-is:             Spec.hs
-  build-depends:       base
-                     , bitter-xylophone
-  default-language:    Haskell2010
-  ghc-options:         -threaded
 
 source-repository head
   type:     git
