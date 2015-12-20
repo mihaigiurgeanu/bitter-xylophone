@@ -3,3 +3,4 @@ resolver: lts-3.2
 flags: {}
 packages:
 - '.'
+- wai-handler-launch-3.0.0.4
