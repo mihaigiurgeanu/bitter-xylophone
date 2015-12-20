@@ -1,5 +1,6 @@
 (defproject bitter-xylophone-js "0.1.0-SNAPSHOT"
-  :plugins [[lein-cljsbuild "1.1.1"]]
+  :plugins [[lein-cljsbuild "1.1.1"]
+            [cider/cider-nrepl "0.10.0"]]
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.170"]
                  [secretary "1.2.3"]
