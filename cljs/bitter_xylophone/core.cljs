@@ -4,6 +4,7 @@
             [goog.history.EventType :as EventType]
             [bitter-xylophone.filtering :refer [show-all show-device show-category set-active-nav! update-count-summaries!]]
             [bitter-xylophone.actions :refer [set-up-actions! get-processes]]
+            [bitter-xylophone.running-apps :refer []]
             [shodan.console :as console :include-macros true])
   (:import goog.History
            goog.history.Html5History))
