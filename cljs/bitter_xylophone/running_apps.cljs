@@ -11,10 +11,10 @@
 (defn- make-descriptions
   "Add description to the processes list, yielding a 
   list of objects with :uuid and :desription keys."
-  [processes exectuions]
+  [processes executions]
   (let [make-description (fn [uuid]
                           {:uuid uuid
-                           :description (exectuions uuid)})]
+                           :description (executions uuid)})]
    (map make-description processes)))
 
 (defn- make-row

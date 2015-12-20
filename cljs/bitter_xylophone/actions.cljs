@@ -22,7 +22,8 @@
   (console/log (str "POST execute request received response from server: " data))
   (siren! {:content (str "<i class='fa fa-spinner'></i> Executing " description), :delay 7000})
   (swap! app-state (fn [state]
-                     (assoc state :executions (assoc (state :executions) uuid description)))))
+                     (console/debug (str "Remembering new launch: uuid -> " (data "uuid") ", description -> " description))
+                     (assoc-in state [:executions (data "uuid")] description))))
 
 (defn- exec-failed
   "Handler for failure of POST execute command"
