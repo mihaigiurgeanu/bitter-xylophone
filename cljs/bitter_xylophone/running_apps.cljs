@@ -13,8 +13,9 @@
   list of objects with :uuid and :desription keys."
   [processes executions]
   (let [make-description (fn [uuid]
-                          {:uuid uuid
-                           :description (executions uuid)})]
+                           (let [description (executions uuid)]
+                             {:uuid uuid
+                              :description (if (empty? description) uuid description)}))]
    (map make-description processes)))
 
 (defn- make-row
